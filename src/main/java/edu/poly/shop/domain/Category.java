@@ -1,5 +1,7 @@
 package edu.poly.shop.domain;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
-private int categoryId;
-private String name;
+	@NotEmpty
+	private int categoryId;
+	@NotEmpty
+	@Min(value= 5)
+	private String name;
 }
