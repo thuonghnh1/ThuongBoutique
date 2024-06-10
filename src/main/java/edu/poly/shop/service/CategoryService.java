@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import edu.poly.shop.domain.Category;
@@ -51,5 +53,11 @@ public interface CategoryService {
 	<S extends Category> List<S> saveAll(Iterable<S> entities);
 
 	<S extends Category> S save(S entity);
+
+	List<Category> findByNameContaining(String name);
+
+    Page<Category> findAll(Pageable pageable);
+
+	Page<Category> findByNameContaining(String name, Pageable pageable);
 
 }
