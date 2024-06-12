@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>List of products</title>
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+	rel="stylesheet">
+</head>
+
+<body>
+	<div class="container">
+		<h1 class="my-4">List of Products</h1>
+		<div th:if="${message != null}" class="alert alert-info" role="alert">
+			<i>[[${message}]]</i>
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Product ID</th>
+					<th>Name</th>
+					<th>Quantity</th>
+					<th>Price</th>
+					<th>Date</th>
+					<th></th>
+					<th></th>
+					<th></th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="product : ${products}">
+					<td scope="row">[[${product.productId}]]</td>
+					<td th:text="${product.name}"></td>
+					<td><a
+						th:href="@{'/admin/products/view' +${product.productId}}"
+						class="btn btn-sm btn-info">View</a> <a
+						th:href="@{'/admin/products/edit/' +${product.productId}}"
+						class="btn btn-sm btn-success">Edit</a> <a
+						th:href="@{'/admin/products/delete/' + ${product.productId}}"
+						class="btn btn-sm btn-danger">Delete</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<li class="page-item"><a class="page-link" href="#"
+					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+				</a></li>
+				<li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item"><a class="page-link" href="#"
+					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				</a></li>
+			</ul>
+		</nav>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

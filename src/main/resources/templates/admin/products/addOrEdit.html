@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/dashboardLayout.html}">
+
+<head>
+<meta charset="UTF-8">
+<title>Add Or Edit Product</title>
+</head>
+
+<body>
+	<form th:action="@{/admin/products/saveOrUpdate}"
+		th:object="${product}" class="container" method="post"
+		layout:fragment="content">
+		<div>
+			<h1 th:text="${product.isEdit} ? 'Edit Product' : 'Add New Product'"></h1>
+		</div>
+		<div class="mb-3">
+			<label for="productId" class="form-label">Product ID:</label> <input
+				type="hidden" th:field="*{isEdit}"> <input type="text"
+				class="form-control" id="productId" placeholder="Product ID"
+				th:field="*{productId}" th:value="*{productId}" readonly="readonly">
+			<small th:if="${#fields.hasErrors('productId')}" id="productId"
+				class="form-text text-muted">Product ID is required</small>
+		</div>
+		<div class="mb-3">
+			<label for="productName" class="form-label">Name:</label> <input
+				type="text" class="form-control" id="productName"
+				placeholder="Product Name" th:field="*{name}"> <small
+				th:if="${#fields.hasErrors('name')}" id="name"
+				class="form-text text-muted">Name is required or invalid</small>
+		</div>
+		<div class="mb-3">
+			<label for="quantity" class="form-label">Quantity:</label> <input
+				type="number" class="form-control" id="quantity"
+				placeholder="Quantity" th:field="*{quantity}"> <small
+				th:if="${#fields.hasErrors('quantity')}" id="quantity"
+				class="form-text text-muted">Quantity is required</small>
+		</div>
+		<div class="mb-3">
+			<label for="unitPrice" class="form-label">Unit Price:</label> <input
+				type="number" step="0.01" class="form-control" id="unitPrice"
+				placeholder="Unit Price" th:field="*{unitPrice}"> <small
+				th:if="${#fields.hasErrors('unitPrice')}" id="unitPrice"
+				class="form-text text-muted">Unit Price is required</small>
+		</div>
+		<div class="mb-3">
+			<label for="image" class="form-label">Image URL:</label> <input
+				type="text" class="form-control" id="image" placeholder="Image URL"
+				th:field="*{image}"> <small
+				th:if="${#fields.hasErrors('image')}" id="image"
+				class="form-text text-muted">Image URL is required</small>
+		</div>
+		<div class="mb-3">
+			<label for="description" class="form-label">Description:</label>
+			<textarea class="form-control" id="description"
+				placeholder="Description" th:field="*{description}"></textarea>
+			<small th:if="${#fields.hasErrors('description')}" id="description"
+				class="form-text text-muted">Description is required</small>
+		</div>
+		<div class="mb-3">
+			<label for="discount" class="form-label">Discount:</label> <input
+				type="number" step="0.01" class="form-control" id="discount"
+				placeholder="Discount" th:field="*{discount}"> <small
+				th:if="${#fields.hasErrors('discount')}" id="discount"
+				class="form-text text-muted">Discount is required</small>
+		</div>
+		<div class="mb-3">
+			<label for="entereDate" class="form-label">Enter Date:</label> <input
+				type="date" class="form-control" id="entereDate"
+				th:field="*{entereDate}"> <small
+				th:if="${#fields.hasErrors('entereDate')}" id="entereDate"
+				class="form-text text-muted">Enter Date is required</small>
+		</div>
+		<div class="mb-3">
+			<label for="status" class="form-label">Status:</label> <input
+				type="number" class="form-control" id="status" placeholder="Status"
+				th:field="*{status}"> <small
+				th:if="${#fields.hasErrors('status')}" id="status"
+				class="form-text text-muted">Status is required</small>
+		</div>
+		<div class="mb-3">
+			<label for="category" class="form-label">Category:</label> <select
+				class="form-control" id="category" th:field="*{categoryId}">
+				<option th:each="category : ${categories}"
+					th:value="${category.categoryId}" th:text="${category.name}">Category
+					Name</option>
+			</select> <small th:if="${#fields.hasErrors('categoryId')}" id="categoryId"
+				class="form-text text-muted">Category is required</small>
+		</div>
+
+		<hr>
+		<button type="reset" class="btn btn-secondary">Reset</button>
+		<a th:href="@{/admin/products}" class="btn btn-success">List
+			Products</a>
+		<button type="submit" class="btn btn-danger">
+			<i class="bi bi-floppy2"></i> <span th:if="${product.isEdit}">Update</span>
+			<span th:unless="${product.isEdit}">Save</span>
+		</button>
+	</form>
+</body>
+
+</html>
