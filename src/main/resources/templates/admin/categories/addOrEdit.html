@@ -1,41 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorate="~{admin/dashboardLayout.html}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/dashboardLayout.html}">
 
 <head>
-    <meta charset="UTF-8">
-   <title>Add Or Edit</title>
+<meta charset="UTF-8">
+<title>Add Or Edit</title>
 </head>
 
 <body>
-    <form th:action="@{/admin/categories/saveOrUpdate}" th:object="${category}" class="container" method="post" layout:fragment="content">
-        <div>
-            <h1>Add New Category</h1>
-        </div>
-        <div class="mb-3">
-            <label for="categoryId" class="form-label">Category ID:</label>
-            <input type="hidden" th:field="*{isEdit}">
-            <input type="text" class="form-control" id="categoryId" aria-describedby="categoryHelp"
-                placeholder="Category ID" th:field="*{categoryId}" th:value="*{categoryId}" readonly="readonly">
-            <small th:if="${#fields.hasErrors('categoryId')}" id="categoryId" class="form-text text-muted">Category id
-                is required</small>
-        </div>
-        <div class="mb-3">
-            <label for="categoryName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="categoryName" placeholder="Category Name" th:field="*{name}">
-            <small th:if="${#fields.hasErrors('name')}" id="name" class="form-text text-muted">Name is required or
-                invalid</small>
-        </div>
-        <hr>
-        <button type="reset" class="btn btn-secondary">Reset</button>
-        <a th:href="@{/admin/categories}" class="btn btn-success">List Categories</a>
-        <button type="submit" class="btn btn-danger">
-            <i class="bi bi-floppy2"></i>
-            <span th:if="${category.isEdit}">Update</span>
-            <span th:unless="${category.isEdit}">Save</span>
-        </button>
-    </form>
+	<form th:action="@{/admin/categories/saveOrUpdate}"
+		th:object="${category}" class="container" method="post"
+		layout:fragment="content">
+		<div>
+			<h1>Add New Category</h1>
+		</div>
+		<div class="mb-3">
+			<label for="categoryId" class="form-label">Category ID:</label> <input
+				type="hidden" th:field="*{isEdit}"> <input type="text"
+				class="form-control" id="categoryId" aria-describedby="categoryHelp"
+				placeholder="Category ID" th:field="*{categoryId}"
+				th:value="*{categoryId}" readonly="readonly"> <small
+				th:if="${#fields.hasErrors('categoryId')}" id="categoryId"
+				class="form-text text-muted">Category id is required</small>
+		</div>
+		<div class="mb-3">
+			<label for="categoryName" class="form-label">Name</label> <input
+				type="text" class="form-control" id="categoryName"
+				placeholder="Category Name" th:field="*{name}"> <small
+				th:if="${#fields.hasErrors('name')}" id="name"
+				class="form-text text-muted">Name is required or invalid</small>
+		</div>
+		<hr>
+		<button type="reset" class="btn btn-secondary">
+			<i class="bi bi-arrow-clockwise"></i> Reset
+		</button>
+		<a th:href="@{/admin/categories}" class="btn btn-success">List
+			Categories</a>
+		<button type="submit" class="btn btn-danger">
+			<i class="bi bi-floppy2"></i> <span th:if="${category.isEdit}">Update</span>
+			<span th:unless="${category.isEdit}">Save</span>
+		</button>
+	</form>
 </body>
 
 </html>

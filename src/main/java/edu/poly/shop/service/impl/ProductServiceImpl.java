@@ -81,7 +81,12 @@ public class ProductServiceImpl implements ProductService {
 	public Page<Product> findByNameContaining(String name, Pageable pageable) {
 		return productRepository.findByNameContaining(name, pageable);
 	}
-
+	
+	@Override
+	public List<Product> findByPrice(Double price) {
+        return productRepository.findByPrice(price);
+    }
+	
 	@Override
 	public void deleteInBatch(Iterable<Product> entities) {
 		productRepository.deleteInBatch(entities);

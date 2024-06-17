@@ -9,10 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Customer {
 	private int customerId;
+	private String fullname;
 	private String name;
 	private String email;
 	private String password;
 	private String phone;
-	private Date registeredDate;
-	private short status;
+//	private Date registeredDate;
+//	private short status;
+	private boolean isAdmin;
 }

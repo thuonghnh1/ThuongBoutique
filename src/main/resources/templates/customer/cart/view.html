@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{customer/dashboardLayout.html}">
+	<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+</head>
+<body>
+<div class="container mt-5" layout:fragment="content">
+    <h2>Shopping Cart</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${cartItems.values()}">
+                <td th:text="${item.name}">Product Name</td>
+                <td th:text="${item.quantity}">1</td>
+                <td th:text="${item.unitPrice}">0</td>
+                <td th:text="${item.totalPrice}">0</td>
+                <td>
+                    <a th:href="@{/customer/cart/remove/{productId}(productId=${item.productId})}" class="btn btn-danger">Remove</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+     <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                <span th:text="${errorMessage}"></span>
+            </div>
+    <a th:href="@{/customer/cart/clear}" class="btn btn-warning">Clear Cart</a>
+    <a th:href="@{/customer/products}" class="btn btn-secondary">Continue Shopping</a>
+</div>
+</body>
+</html>

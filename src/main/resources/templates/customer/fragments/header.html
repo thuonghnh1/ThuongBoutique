@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div th:fragment="header">
+   <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img src="https://i.pinimg.com/736x/de/89/03/de8903a03c209c9b3930821c7fb1ec76.jpg" class="rounded-circle mx-2" alt="Thuong Logo">
+                </a>
+                <a class="navbar-brand" th:href="@{/customer/products}">Thuong's Boutique</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+						<ul class="navbar-nav ml-auto">
+							<li class="nav-item"><a class="nav-link" th:href="@{/customer/products}">Home</a></li>
+							<li class="nav-item"><a class="nav-link" href="#">Order</a>
+							</li>
+							<li class="nav-item">
+							<a class="nav-link" th:href="@{/customer/profile/edit(customerId=${customerId})}"><i class="bi bi-person-circle"></i> Profile</a>
+							</li>
+							<li class="nav-item"><a class="nav-link" href="#footer">About
+									Us</a></li>
+									<li class="nav-item"><a th:href="@{/customer/cart/view}" class="nav-link"><i
+										class="bi bi-cart3"></i></a></li>
+							<li class="nav-item"><a class="nav-link" th:href="@{/account/logout}"><i
+										class="bi bi-box-arrow-right"></i></a></li>
+						</ul>
+					</div>
+            </div>
+        </nav>
+    </header>
+    </div>
+</body>
+
+</html>

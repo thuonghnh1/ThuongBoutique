@@ -65,13 +65,13 @@
 				th:if="${#fields.hasErrors('discount')}" id="discount"
 				class="form-text text-muted">Discount is required</small>
 		</div>
-		<div class="mb-3">
+		<!-- <div class="mb-3">
 			<label for="entereDate" class="form-label">Enter Date:</label> <input
 				type="date" class="form-control" id="entereDate"
 				th:field="*{entereDate}"> <small
 				th:if="${#fields.hasErrors('entereDate')}" id="entereDate"
 				class="form-text text-muted">Enter Date is required</small>
-		</div>
+		</div> -->
 		<div class="mb-3">
 			<label for="status" class="form-label">Status:</label> <input
 				type="number" class="form-control" id="status" placeholder="Status"
@@ -90,7 +90,7 @@
 		</div>
 
 		<hr>
-		<button type="reset" class="btn btn-secondary">Reset</button>
+		<button type="reset" class="btn btn-secondary"><i class="bi bi-arrow-clockwise"></i> Reset</button>
 		<a th:href="@{/admin/products}" class="btn btn-success">List
 			Products</a>
 		<button type="submit" class="btn btn-danger">

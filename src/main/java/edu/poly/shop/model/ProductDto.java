@@ -16,9 +16,7 @@ public class ProductDto {
 	private int quantity;
 	private double unitPrice;
 	private String image;
-	
-	private MultipartFile imageFile;
-	
+		
 	private String description;
 	private double discount;
 	private Date entereDate;

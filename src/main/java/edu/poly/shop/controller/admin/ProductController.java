@@ -1,5 +1,6 @@
 package edu.poly.shop.controller.admin;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,6 +51,7 @@ public class ProductController {
 	@GetMapping("add")
 	public String add(Model model) {
 		ProductDto dto = new ProductDto();
+
 		dto.setIsEdit(false);
 		model.addAttribute("product", dto);
 		return "admin/products/addOrEdit";
@@ -63,6 +65,7 @@ public class ProductController {
 		if (opt.isPresent()) {
 			Product entity = opt.get();
 			BeanUtils.copyProperties(entity, dto);
+	        dto.setCategoryId(entity.getCategory().getCategoryId());
 			dto.setIsEdit(true);
 			model.addAttribute("product", dto);
 			return new ModelAndView("admin/products/addOrEdit", model);
@@ -72,22 +75,57 @@ public class ProductController {
 		return new ModelAndView("forward:/admin/products/addOrEdit", model);
 	}
 
+	/*
+	 * @PostMapping("saveOrUpdate") public ModelAndView saveOrUpdate(ModelMap
+	 * model, @Valid @ModelAttribute("product") ProductDto dto, BindingResult
+	 * result) { if (result.hasErrors()) { System.out.println("82"+result); return
+	 * new ModelAndView("admin/products/addOrEdit"); }
+	 * 
+	 * Product entity = new Product();
+	 * 
+	 * BeanUtils.copyProperties(dto, entity);
+	 * 
+	 * // lưu category id Optional<Category> optCategory =
+	 * categoryService.findById(dto.getCategoryId()); if (optCategory.isPresent()) {
+	 * entity.setCategory(optCategory.get()); } else {
+	 * result.rejectValue("categoryId", "error.product", "Invalid Category"); return
+	 * new ModelAndView("admin/products/addOrEdit"); }
+	 * 
+	 * productService.save(entity);
+	 * 
+	 * model.addAttribute("message", "Product is saved!"); return new
+	 * ModelAndView("redirect:/admin/products", model); }
+	 */
+
 	@PostMapping("saveOrUpdate")
-	public ModelAndView saveOrUpdate(ModelMap model, @Valid @ModelAttribute("product") ProductDto dto,
-			BindingResult result) {
-		if (result.hasErrors()) {
-			return new ModelAndView("admin/products/addOrEdit");
-		}
+	public ModelAndView saveOrUpdateProduct(@ModelAttribute("product") ProductDto productDto, ModelMap model,@RequestParam("categoryId") Long categoryId) {
+	    Product product = convertToEntity(productDto);
+	    
+	    product.setImage(productDto.getImage());   
+	    // Tìm đối tượng Category dựa trên categoryId
+	    Optional<Category> categoryOptional = categoryService.findById(categoryId);
+	    if (categoryOptional.isPresent()) {
+	        Category category = categoryOptional.get();
+	        product.setCategory(category);
 
-		Product entity = new Product();
+	        product.setEntereDate(productDto.getEntereDate());
+	        
+	        productService.save(product);
 
-		BeanUtils.copyProperties(dto, entity);
-		productService.save(entity);
+	        model.addAttribute("message", "Product is saved!");
 
-		model.addAttribute("message", "Product is saved!");
-		return new ModelAndView("redirect:/admin/products", model);
+	        return new ModelAndView("redirect:/admin/products", model);
+	    } else {
+	        model.addAttribute("message", "Không tìm thấy danh mục với ID cung cấp.");
+	        return new ModelAndView("redirect:/admin/products", model);
+	    }
 	}
-
+	private Product convertToEntity(ProductDto productDto) {
+	    Product product = new Product();
+	    BeanUtils.copyProperties(productDto, product);  
+	    return product;
+	}
+	
 	@GetMapping("delete/{productId}")
 	public String delete(@PathVariable("productId") Long productId, ModelMap model) {
 		productService.deleteById(productId);
@@ -101,19 +139,35 @@ public class ProductController {
 		model.addAttribute("products", list);
 		return "admin/products/list";
 	}
+//	@RequestMapping("")
+//	public String list(@RequestParam(defaultValue = "0") int page,
+//	                   @RequestParam(defaultValue = "10") int size,
+//	                   ModelMap model) {
+//	    Pageable pageable = PageRequest.of(page, size);
+//	    Page<Product> productPage = productService.findAll(pageable);
+//	    model.addAttribute("productPage", productPage);
+//	    return "admin/products/list";
+//	}
 
 	@GetMapping("search")
-	public String search(ModelMap model, @RequestParam(name = "name", required = false) String name) {
-		List<Product> list = null;
-		if (StringUtils.hasText(name)) {
-			list = productService.findByNameContaining(name);
-		} else {
-			list = productService.findAll();
-		}
-		model.addAttribute("products", list);
-		return "admin/products/search";
-	}
+	public String search(ModelMap model,
+	        @RequestParam(name = "name", required = false) String name,
+	        @RequestParam(name = "price", required = false) Double price) {
 
+	    List<Product> list = null;
+
+	    	if (StringUtils.hasText(name)) {
+	        list = productService.findByNameContaining(name);
+	    } else if (price != null) {
+	        list = productService.findByPrice(price);
+	    } else {
+	        list = productService.findAll();
+	    }
+
+	    model.addAttribute("products", list);
+	    return "admin/products/search";
+	}
+	
 	@GetMapping("searchpaginated")
 	public String searchAndPage(ModelMap model, @RequestParam(name = "name", required = false) String name,
 			@RequestParam(name = "page", defaultValue = "1") int page,
@@ -151,6 +205,23 @@ public class ProductController {
 		model.addAttribute("productPage", rsPage);
 
 		return "admin/products/searchpaginated";
+	}
+	
+	@GetMapping("detail/{productId}")
+	public ModelAndView viewDetail(ModelMap model, @PathVariable("productId") Long productId) {
+	    Optional<Product> opt = productService.findById(productId);
+
+	    if (opt.isPresent()) {
+	    	 Product product = opt.get();
+	         System.out.println("Product: " + product);
+	         System.out.println("Category: " + product.getCategory().getName());
+	         
+	         model.addAttribute("product", product);
+	        return new ModelAndView("admin/products/detail", model);
+	    }
+
+	    model.addAttribute("message", "Product not found!");
+	    return new ModelAndView("forward:/admin/products", model);
 	}
 
 }

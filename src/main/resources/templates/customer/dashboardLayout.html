@@ -23,18 +23,12 @@
 </head>
 
 <body>
-	<main>
+	<main >
 		<header>
 			<div class="col">
-				<div th:replace="admin/fragments/header:: header"></div>
+				<div th:replace="customer/fragments/header:: header"></div>
 			</div>
-
 		</header>
-		<!-- <nav>
-			<div class="col">
-				<div th:replace="admin/fragments/nav:: nav"></div>
-			</div>
-		</nav> -->
 		<section>
 			<div class="col">
 				<div layout:fragment="content"></div>
@@ -43,7 +37,7 @@
 		<hr>
 		<footer>
 			<div class="col">
-				<div th:replace="admin/fragments/footer:: footer"></div>
+				<div th:replace="customer/fragments/footer:: footer"></div>
 			</div>
 		</footer>
 	</main>

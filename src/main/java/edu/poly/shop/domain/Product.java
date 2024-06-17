@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -23,40 +24,45 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name= "products")
+@Table(name = "products")
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long productId;
-	
+
 	@Column(columnDefinition = "nvarchar(100) not null")
 	private String name;
-	
+
 	@Column(nullable = false)
 	private int quantity;
-	
+
 	@Column(nullable = false)
 	private double unitPrice;
-	
-	@Column(length= 200)
+
+	@Column(length = 200)
 	private String image;
-	
+
 	@Column(columnDefinition = "nvarchar(500) not null")
 	private String description;
-	
+
 	@Column(nullable = false)
 	private double discount;
-	
+
 	@Temporal(TemporalType.DATE)
 	private Date entereDate;
-	
+
 	@Column(nullable = false)
 	private short status;
-	
+
 	@ManyToOne
-	@JoinColumn(name= "categoryId")
+	@JoinColumn(name = "categoryId")
 	private Category category;
-	
+
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private Set<OrderDetail> orderDetails;
+
+	@PrePersist
+	protected void onCreate() {
+		this.entereDate = new Date();
+	}
 }

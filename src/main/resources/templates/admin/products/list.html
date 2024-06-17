@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/dashboardLayout.html}">
 <head>
 <meta charset="UTF-8">
 <title>List of products</title>
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
 </head>
 
 <body>
-	<div class="container">
+	<div class="container" layout:fragment="content">
 		<h1 class="my-4">List of Products</h1>
 		<div th:if="${message != null}" class="alert alert-info" role="alert">
 			<i>[[${message}]]</i>
@@ -22,9 +20,10 @@
 					<th>Name</th>
 					<th>Quantity</th>
 					<th>Price</th>
+					<th>Image</th>
+					<th>Discount</th>
 					<th>Date</th>
-					<th></th>
-					<th></th>
+					<th>Category Name</th>
 					<th></th>
 
 				</tr>
@@ -33,8 +32,15 @@
 				<tr th:each="product : ${products}">
 					<td scope="row">[[${product.productId}]]</td>
 					<td th:text="${product.name}"></td>
+					<td th:text="${product.quantity}"></td>
+					<td th:text="${product.unitPrice}"></td>
+					<td><img th:src="${product.image}" alt="Product Image"
+						style="max-width: 100px; max-height: 100px;"></td>
+					<td th:text="${product.discount}"></td>
+					<td th:text="${product.entereDate}"></td>
+					 <td th:text="${product.category.name}"></td>
 					<td><a
-						th:href="@{'/admin/products/view' +${product.productId}}"
+						th:href="@{'/admin/products/detail/' +${product.productId}}"
 						class="btn btn-sm btn-info">View</a> <a
 						th:href="@{'/admin/products/edit/' +${product.productId}}"
 						class="btn btn-sm btn-success">Edit</a> <a
@@ -56,13 +62,28 @@
 				</a></li>
 			</ul>
 		</nav>
+		
+		<!-- <nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<li class="page-item" th:classappend="${productPage.hasPrevious()} ? '' : 'disabled'">
+					<a class="page-link" th:href="@{'?page=' + ${productPage.number - 1} + '&size=' + ${productPage.size}}" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+					</a>
+				</li>
+				<li class="page-item" th:each="pageNum : ${#numbers.sequence(0, productPage.totalPages - 1)}"
+					th:classappend="${pageNum == productPage.number} ? 'active'">
+					<a class="page-link" th:href="@{'?page=' + ${pageNum} + '&size=' + ${productPage.size}}"
+						th:text="${pageNum + 1}">1</a>
+				</li>
+				<li class="page-item" th:classappend="${productPage.hasNext()} ? '' : 'disabled'">
+					<a class="page-link" th:href="@{'?page=' + ${productPage.number + 1} + '&size=' + ${productPage.size}}" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav> -->
 	</div>
 
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

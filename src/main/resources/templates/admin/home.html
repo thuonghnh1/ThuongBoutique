@@ -1,0 +1,72 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/dashboardLayout.html}"
+	>
+
+<head>
+<meta charset="UTF-8">
+<title>Home Page</title>
+</head>
+<body>
+	<div class="container" layout:fragment="content">
+		<h1 class="mt-4 mb-4">Products</h1>
+		<div class="row">
+			<!-- Duyệt qua danh sách sản phẩm và hiển thị thông tin cần thiết -->
+			<th:block th:each="product : ${products}">
+
+				<div class="col-lg-3 col-md-6 mb-4">
+					<div class="card h-100">
+						<!-- Ảnh sản phẩm -->
+						<img class="card-img-top img-fluid product-image"
+							th:src="@{${product.image}}" alt="Product Image">
+						<div class="card-body">
+							<!-- Tên sản phẩm -->
+							<h4 class="card-title" th:text="${product.name}"></h4>
+							<!-- Giá và Giảm giá -->
+							<h5>
+								<p>
+									Price: <span class="text-danger"
+										th:text="'₫ ' +${product.unitPrice}"></span>
+								</p>
+								<p>
+									Discount: <span class="text-muted ml-2"
+										th:text="${product.discount} + '%'"></span>
+								</p>
+							</h5>
+							<!-- Mô tả sản phẩm -->
+							<p class="card-text fw-semibold">
+								"<i th:text="${product.description}"></i>"
+							</p>
+						</div>
+						<div
+							class="card-footer d-flex justify-content-between align-items-center">
+							<form
+								th:action="@{/customer/cart/add/{productId}(productId=${product.productId})}"
+								method="post">
+								<input type="hidden" th:value="${product.productId}"
+									name="productId" />
+								<div class="input-group">
+									<input type="number" name="quantity" class="form-control"
+										min="1" value="1" required>
+									<div class="input-group-append">
+										<button type="submit" class="btn btn-outline-danger mx-1"><i class="bi bi-cart3"></i>Add to cart</button>
+									</div>
+								</div>
+							</form>
+							<!--  <input type="hidden" th:value="${product.productId}" name="productId"/> -->
+							<!-- <button type="submit" class="btn btn-outline-danger">Add to Cart</button> -->
+							<!--   <a th:href="@{/customer/cart/add/{productId}(productId=${product.productId})}" class="btn btn-outline-danger">Add to Cart</a> -->
+
+							<a
+								th:href="@{/customer/products/detail/{productId}(productId=${product.productId})}"
+								class="btn btn-outline-primary">View</a>
+
+
+						</div>
+					</div>
+				</div>
+			</th:block>
+		</div>
+	</div>
+</body>
+</html>
